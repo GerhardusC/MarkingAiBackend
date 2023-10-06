@@ -13,6 +13,10 @@ const studentSchema = new mongoose.Schema({
     type: String,
     required: true,
   },
+  tests: {
+    type: [mongoose.Types.ObjectId],
+    ref: "tests",
+  },
 });
 
 module.exports.studentModel = mongoose.model("students", studentSchema);

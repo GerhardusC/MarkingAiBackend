@@ -1,11 +1,6 @@
 const mongoose = require("mongoose");
 
 const questionSchema = new mongoose.Schema({
-  test: {
-    type: mongoose.Types.ObjectId,
-    ref: "tests",
-    required: true,
-  },
   totalMarks: {
     type: Number,
     required: true,

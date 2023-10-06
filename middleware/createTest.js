@@ -4,6 +4,8 @@ const createTest = async (req, res, next) => {
   try {
     const newTest = {
       testName: req.body.testName,
+      marks: req.body.marks,
+      questions: [...req.body.questions],
     };
     if (await testModel.exists({ testName: req.body.testName })) {
       res.status(300);

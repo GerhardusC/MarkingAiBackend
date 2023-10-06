@@ -7,9 +7,9 @@ const createStudent = async (req, res, next) => {
       studentEmail: req.body.studentEmail,
       studentId: req.body.studentId,
     };
-    if (await studentModel.exists({ studentId: req.body.studentId })) {
-      res.status(304);
-      res.json({ message: "Student ID already in use..." });
+    if (await studentModel.exists({ studentEmail: req.body.studentEmail })) {
+      // res.status(304);
+      res.json({ message: "Student already exists..." });
     } else {
       const student = new studentModel(newStudent);
       await student.save();
