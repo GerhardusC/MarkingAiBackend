@@ -1,5 +1,3 @@
-// const questionModel = require('../models/questionModel').questionModel;
-// const studentModel = require("../models/studentModel").studentModel;
 const attemptModel = require("../models/attemptModel").attemptModel;
 
 const createAttempt = async (req, res, next) => {
@@ -8,10 +6,13 @@ const createAttempt = async (req, res, next) => {
       question: req.body.question,
       student: req.body.student,
       studentAnswer: req.body.studentAnswer,
+      mark: res.mark,
+      feedback: res.feedback,
+      justification: res.justification,
     };
     const attempt = new attemptModel(newAttempt);
     await attempt.save();
-    res.json({ attemptId: attempt._id, message: "Attempt recorded." });
+    await res.json({ message: "Attempt recorded.", attempt: attempt });
   } catch (err) {
     res.status(400);
     res.json({ message: err.message });

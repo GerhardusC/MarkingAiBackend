@@ -1,17 +1,18 @@
 const express = require("express");
 const validateBody = require("../middleware/validateBody");
+const createAttempt = require("../middleware/createAttempt");
+const getQuestionById = require("../middleware/getQuestionById");
 const sendGradingPrompts = require("../middleware/sendGradingPrompts");
 const router = express.Router();
 
 router.post(
   "/mark_question",
   validateBody,
+  getQuestionById,
   sendGradingPrompts.sendMarkingPrompt,
   sendGradingPrompts.sendFeedbackPrompt,
   sendGradingPrompts.sendJustificationPrompt,
-  (req, res) => {
-    res.json(res.content);
-  }
+  createAttempt
 );
 
 router.post("/save_question", (req, res) => {

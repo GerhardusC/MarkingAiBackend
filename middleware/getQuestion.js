@@ -5,7 +5,8 @@ const getQuestion = async (req, res, next) => {
     const question = await questionModel.findOne({
       questionText: req.query.questionText,
     });
-    res.json(question);
+    res.content.question = question;
+    next();
   } catch (err) {
     res.status(400);
     res.json({ message: err.message });

@@ -15,6 +15,15 @@ const attemptSchema = new mongoose.Schema({
     type: String,
     required: true,
   },
+  mark: {
+    type: Number,
+  },
+  feedback: {
+    type: String,
+  },
+  justification: {
+    type: String,
+  },
 });
 
 module.exports.attemptModel = mongoose.model("attempts", attemptSchema);

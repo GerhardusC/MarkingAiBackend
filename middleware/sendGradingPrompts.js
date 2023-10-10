@@ -15,12 +15,12 @@ const openai = new AIClass({ apiKey: process.env.GPT_API_KEY });
 
 const sendMarkingPrompt = async (req, res, next) => {
   const prompt = genPrompts.generateMarkPrompt(
-    req.body.question,
-    req.body.questionType,
-    req.body.total,
+    res.question.questionText,
+    res.question.questionType,
+    res.question.totalMarks,
     req.body.studentAnswer,
-    req.body.memo,
-    req.body.modelAnswer
+    res.question.markingGuide,
+    res.question.modelAnswer
   );
   try {
     const completion = await openai.chat.completions.create({
@@ -34,8 +34,8 @@ const sendMarkingPrompt = async (req, res, next) => {
       ],
       max_tokens: 3,
     });
-    res.content = { mark: completion.choices[0].message.content };
-    next();
+    res.mark = completion.choices[0].message.content;
+    await next();
   } catch (error) {
     res.json({ message: error.message });
   }
@@ -43,11 +43,11 @@ const sendMarkingPrompt = async (req, res, next) => {
 
 const sendFeedbackPrompt = async (req, res, next) => {
   const prompt = genPrompts.generateFeedbackPrompt(
-    req.body.question,
-    req.body.questionType,
-    req.body.total,
+    res.question.questionText,
+    res.question.questionType,
+    res.question.totalMarks,
     req.body.studentAnswer,
-    req.body.memo
+    res.question.modelAnswer
   );
   try {
     const completion = await openai.chat.completions.create({
@@ -61,8 +61,8 @@ const sendFeedbackPrompt = async (req, res, next) => {
       ],
       max_tokens: 50,
     });
-    res.content.feedback = completion.choices[0].message.content;
-    next();
+    res.feedback = completion.choices[0].message.content;
+    await next();
   } catch (error) {
     res.json({ message: error.message });
   }
@@ -70,13 +70,13 @@ const sendFeedbackPrompt = async (req, res, next) => {
 
 const sendJustificationPrompt = async (req, res, next) => {
   const prompt = genPrompts.generateJustificationPrompt(
-    req.body.question,
-    req.body.questionType,
-    req.body.total,
+    res.question.questionText,
+    res.question.questionType,
+    res.question.totalMarks,
     req.body.studentAnswer,
-    req.body.memo,
-    req.body.modelAnswer,
-    res.content.mark
+    res.question.markingGuide,
+    res.question.modelAnswer,
+    res.mark
   );
   try {
     const completion = await openai.chat.completions.create({
@@ -90,8 +90,8 @@ const sendJustificationPrompt = async (req, res, next) => {
       ],
       max_tokens: 50,
     });
-    res.content.justification = completion.choices[0].message.content;
-    next();
+    res.justification = completion.choices[0].message.content;
+    await next();
   } catch (error) {
     res.json({ message: error.message });
   }
