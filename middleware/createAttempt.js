@@ -3,6 +3,7 @@ const attemptModel = require("../models/attemptModel").attemptModel;
 const createAttempt = async (req, res, next) => {
   try {
     const newAttempt = {
+      test: req.body.test,
       question: req.body.question,
       student: req.body.student,
       studentAnswer: req.body.studentAnswer,

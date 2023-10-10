@@ -1,6 +1,11 @@
 const mongoose = require("mongoose");
 
 const attemptSchema = new mongoose.Schema({
+  test: {
+    type: mongoose.Types.ObjectId,
+    ref: "tests",
+    required: true,
+  },
   question: {
     type: mongoose.Types.ObjectId,
     ref: "questions",
